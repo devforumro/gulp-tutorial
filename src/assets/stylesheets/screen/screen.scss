@@ -1,0 +1,25 @@
+.foo {
+  color:#fff;
+}
+
+.bar {
+  margin-top:10px;
+  margin-bottom: 20px;
+  margin-right: 25px;
+  margin-left: 15px;
+}
+
+@media all and (max-width: 699px) {
+  .foo {
+    color:#cc0000;
+  }
+}
+
+@media all and (max-width: 699px)  {
+  .bar {
+    padding-top: 0;
+    padding-right: 15px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+  }
+}
