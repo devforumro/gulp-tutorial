@@ -31,11 +31,9 @@ function err(err) {
 
 var srcFiles = {
   scripts : {
-    defaultDest: 'dist/assets/stylesheets',
+    defaultDest: 'dist/assets/javascripts',
     main : {
-      files: ['src/assets/javascripts/main/**/*.js'],
-      dest: 'dist/assets/stylesheets'
-
+      files: ['src/assets/javascripts/main/**/*.js']
     },
     utils: [],
     admin : [],
@@ -137,12 +135,20 @@ function groupTasks(name) {
   });
 }
 
+
+Object.keys(srcFiles.assets).forEach(function(group){
+  gulp.task('copy:' + group, function(){
+    return gulp.src(srcFiles.assets[group]).pipe(gulp.dest('dist/assets/' + group)).pipe(livereload());
+  });
+});
+
+
 gulp.task('sass', groupTasks('sass:'));
 gulp.task('scripts', groupTasks('scripts:'));
-
+gulp.task('copy', groupTasks('copy:'));
 
 gulp.task('build', ['clean'], function(){
-  gulp.start(['scripts', 'sass']);
+  gulp.start(['scripts', 'sass', 'copy']);
 });
 
 gulp.task('default', ['build'], function() {
@@ -158,5 +164,9 @@ gulp.task('default', ['build'], function() {
     if (source !== 'defaultDest') {
       gulp.watch(srcFiles.scripts[source].files, ['scripts:' + source]);
     }
+  });
+
+  Object.keys(srcFiles.assets).forEach(function(source){
+    gulp.watch(srcFiles.assets[source], ['copy:' + source]);
   });
 });
