@@ -31,6 +31,10 @@ module.exports = function(name){
     .pipe(sourcemaps.write('.', { sourceRoot: null }))
     .pipe(gulp.dest(dest));
 
+  if (!srcFiles.stylesheets[name].skipMinify) {
+    return pipe1.pipe(livereload());
+  }
+
   var pipe2 = source.pipe(clone())
     .pipe(cssmin())
     .pipe(rename({suffix: '.min'}))
